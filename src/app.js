@@ -1,5 +1,6 @@
 import express from "express";
 import db from "./config/dbConnect.js";
+import books from "./models/book.js"
 
 db.on("error", console.log.bind(console, 'Connection error'))
 db.once("open", () => {
@@ -10,17 +11,19 @@ const app = express();
 
 app.use(express.json());
 
-const books = [
-    { id: 1, "title": "Harry Potter" },
-    { id: 2, "title": "Parcy Jackson" }
-]
+//const books = [
+//    { id: 1, "title": "Harry Potter" },
+//    { id: 2, "title": "Parcy Jackson" }
+//]
 
 app.get('/', (req, res) => {
     res.status(200).send('Crud library');
 })
 
 app.get('/books', (req, res) => {
-    res.status(200).json(books);
+    books.find((err, books) => {
+        res.status(200).json(books);
+    })    
 })
 
 app.get('/books/:id', (req, res) => {
