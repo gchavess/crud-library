@@ -12,7 +12,7 @@ class BookController {
         const id = req.params.id;
 
         books.findById(id, (err, books) => {
-            if(err) {
+            if (err) {
                 res.status(400).send({ message: `${err.message} - Book id not found` })
             } else {
                 res.status(200).send(books);
@@ -25,7 +25,7 @@ class BookController {
 
         book.save((err) =>{
             
-            if(err) {
+            if (err) {
                 res.status(500).send({ message: `${err.message} - failed to register book` })
             } else {
                 res.status(201).send(book.toJSON())
@@ -37,8 +37,20 @@ class BookController {
         const id = req.params.id;
 
         books.findByIdAndUpdate(id, { $set: req.body }, (err) => {
-            if(!err) {
-                res.status(200).send({ message: 'Book successfully updated' })
+            if (!err) {
+                res.status(200).send({ message: 'Book successfully updated' });
+            } else {
+                res.status(500).send({ message: err.message });
+            }
+        })
+    }
+
+    static deleteBook = (req, res) => {
+        const id = req.params.id;
+
+        books.findByIdAndDelete(id, (err) => {
+            if (!err) {
+                res.status(200).send({ message: 'Book successfully removed' });
             } else {
                 res.status(500).send({ message: err.message });
             }
